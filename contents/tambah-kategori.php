@@ -26,7 +26,7 @@ if (isset($_GET['edit'])) {
 }
 ?>
 <div class="container mt-5">
-
+    <!-- Tabel Kategori -->
     <div class="row justify-content-center">
         <div class="col-sm-8">
 
