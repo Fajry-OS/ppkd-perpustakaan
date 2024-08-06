@@ -7,14 +7,17 @@ if (isset($_POST['simpan'])) {
     $nama_lengkap = $_POST['nama_lengkap'];
     $email = $_POST['email'];
     $password = sha1($_POST['password']);
+    $id_level = $_POST['id_level'];
 
     if (!$id) {
-        $queryInsert = mysqli_query($koneksi, "INSERT INTO user (nama_lengkap, email, password) VALUES ('$nama_lengkap', '$email', '$password') ");
+        $queryInsert = mysqli_query($koneksi, "INSERT INTO user (nama_lengkap, email, password, id_level) VALUES ('$nama_lengkap', '$email', '$password', '$id_level') ");
+        header("Location:?pg=user&tambah=berhasil");
     } else {
-        $updateUser = mysqli_query($koneksi, "UPDATE user SET  nama_lengkap = '$nama_lengkap',  email = '$email', password ='$password' WHERE id ='$id' ");
+        $updateUser = mysqli_query($koneksi, "UPDATE user SET  nama_lengkap = '$nama_lengkap',  email = '$email', id_level = '$id_level', password ='$password' WHERE id ='$id' ");
+        header("Location:?pg=user&edit=berhasil");
     }
-    header("Location:?pg=user&tambah=berhasil");
 }
+
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $delete = mysqli_query($koneksi, "DELETE FROM user WHERE id = '$id'");
@@ -25,6 +28,10 @@ if (isset($_GET['edit'])) {
     $edit = mysqli_query($koneksi, "SELECT * FROM user WHERE id = '$id'");
     $rowEdit = mysqli_fetch_assoc($edit);
 }
+
+
+$level = mysqli_query($koneksi, "SELECT * FROM level ORDER BY id DESC");
+
 ?>
 <div class="container mt-5">
 
@@ -35,6 +42,17 @@ if (isset($_GET['edit'])) {
                 <div class="card-header">Data User</div>
                 <div class="card-body">
                     <form action="" method="post">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Level</label>
+                            <select name="id_level" id="" class="form-control">
+                                <option value="">Pilih Level</option>
+                                <!-- Memakai while karena ingin semua data muncul dan tidak memerlukan index,
+                                jika ada index seperti $row[] = $level gunakan foreach -->
+                                <?php while ($rowLevel  = mysqli_fetch_assoc($level)) : ?>
+                                    <option <?= isset($rowEdit['id_level']) ? ($rowEdit['id_level'] == $rowLevel['id']) ? 'selected' : '' : '' ?> value="<?= $rowLevel['id'] ?>"><?= $rowLevel['nama_level'] ?></option>
+                                <?php endwhile ?>
+                            </select>
+                        </div>
                         <div class="mb-3">
                             <label for="" class="form-label">Nama Lengkap</label>
                             <input value="<?= $rowEdit['nama_lengkap'] ?? '' ?>" type="text" class="form-control" name="nama_lengkap" required>

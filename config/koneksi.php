@@ -10,3 +10,7 @@ $koneksi = mysqli_connect($host_koneksi, $username_koneksi, $password_koneksi, $
 // if (!$koneksi) {
 //     die("Koneksi gagal: " . mysqli_error($koneksi));
 // }
+
+if ($koneksi->connect_error) {
+    die("Koneksi gagal: " . $koneksi->connect_error);
+}
