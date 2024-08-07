@@ -15,6 +15,9 @@ $queryAnggota = mysqli_query($koneksi, "SELECT * FROM anggota ORDER BY id DESC")
                     <?php if (isset($_GET['tambah'])) : ?>
                         <div class="alert alert-success">Data Berhasil Ditambah</div>
                     <?php endif ?>
+                    <?php if (isset($_GET['delete'])) : ?>
+                        <div class="alert alert-danger">Data Berhasil Dihapus</div>
+                    <?php endif ?>
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
