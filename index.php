@@ -24,7 +24,7 @@ include 'config/koneksi.php';
 
 <body>
     <div class="wrapper">
-        <nav class="menu navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="menu navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Perpustakaan</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,10 +36,10 @@ include 'config/koneksi.php';
                             <a class="nav-link active" aria-current="page" href="?pg=home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="?pg=user">User</a>
+                            <a class="nav-link" href="?pg=peminjaman">Peminjaman</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="?pg=level">Level</a>
+                            <a class="nav-link" href="?pg=level">Pengembalian</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="?pg=kategori">Kategori</a>
@@ -52,24 +52,26 @@ include 'config/koneksi.php';
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
+                                Master Data
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="#">Buku</a></li>
+                                <li><a class="dropdown-item" href="#">Kategori</a></li>
+                                <li><a class="dropdown-item" href="#">Anggota</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li><a class="dropdown-item" href="?pg=level">Level</a></li>
+                                <li><a class="dropdown-item" href="?pg=user">User</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                            <a class="nav-link" aria-disabled="true">Keluar</a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <button class="btn btn-outline-light" type="submit">Search</button>
                     </form>
                 </div>
             </div>
@@ -89,6 +91,30 @@ include 'config/koneksi.php';
         ?>
         <!-- End Content -->
     </div>
+    <script src="assets/js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+
+    <script>
+        $('#id_kategori').change(function() {
+            let id = $(this).val(),
+                option = "";
+
+            $.ajax({
+                url: "ajax/get_buku.php?id_kategori=" + id,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    option += "<option>Pilih Buku</option>"
+                    $.each(data, function(key, value) {
+                        option += "<option value=" + value.id + ">" + value.judul + "</option>"
+                        // console.log("valuenya : ", value);
+                    });
+                    $('#id_buku').html(option);
+                }
+            })
+        });
+    </script>
 </body>
 
 </html>
